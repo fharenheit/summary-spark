@@ -39,8 +39,8 @@ Scala는 REPL을 지원하므로 REPL 모드로 진입하여 소스코드의 실
 [source,bash]
 ----
 $ scala  // <1>
-Welcome to Scala version 2.11.2 (Java HotSpot(TM)...). Type in expressions to have them evaluated.
-Type :help for more information.
+Welcome to Scala 2.11.8 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_144).
+Type in expressions for evaluation. Or try :help.
 
 scala> val s = "Hello, World!" 
 s: String = Hello, World!
