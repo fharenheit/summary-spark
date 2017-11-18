@@ -82,8 +82,8 @@ println(up.upper("Hello", "World!"))
 === 메소드 정의
 
 * 메소드 정의는 `def`로 시작합니다.
-* 변수를 정의할 때에는 자료형을 뒤에 정의합니다. ==> `strings: String*`
-* 메소드의 반환값은 뒤에 정의합니다. ==> `Seq[String]`
+* 변수를 정의할 때에는 자료형을 뒤에 정의합니다. => `strings: String*`
+* 메소드의 반환값은 뒤에 정의합니다. => `Seq[String]`
 
 [source,scala]
 ----
@@ -101,7 +101,7 @@ def Upper {
 
 === Singletone 정의
 
-Singleton을 정의하려면 `def` 대신 `object`를 다음과 같이 사용하도록 합니다.
+Singleton을 정의하려면 `def` 대신 `object` 를 다음과 같이 사용하도록 합니다.
 
 [source,scala]
 ----
@@ -128,8 +128,8 @@ object Upper {
 
 === 변수 정의
 
-* immutable 변수를 정의하려면 `val`을 사용합니다. Java의 `final`과 유사합니다.
-* mutable 변수를 정의하려면 `var`를 사용합니다.
+* immutable 변수를 정의하려면 `val` 을 사용합니다. Java의 `final` 과 유사합니다.
+* mutable 변수를 정의하려면 `var` 를 사용합니다.
 
 ==== Immutable 변수
 
@@ -191,15 +191,18 @@ scala> p.age = 30 // <5>
 p.age: Int = 30
 ----
 <1> 클래스 정의시 생성자의 변수에 Immutable과 Mutable 변수를 정의
-<2> `Person`을 생성
-<3> `val`, `var`로 정의하는 경우 인스턴스 변수로 같이 정의되어 값을 get하는 것이 가능
-<4> `p.name`은 `val`로 정의가 되어 Immutable하므로 값을 변경할 수 없음
-<5> `p.age`는 Mutable이므로 값을 변경할 수 있음
+<2> `Person` 을 생성
+<3> `val`, `var` 로 정의하는 경우 인스턴스 변수로 같이 정의되어 값을 get하는 것이 가능
+<4> `p.name` 은 `val` 로 정의가 되어 Immutable하므로 값을 변경할 수 없음
+<5> `p.age` 는 Mutable이므로 값을 변경할 수 있음
+
+=== 메소드 기본값 지정
 
 [source,scala]
 ----
-scala> class Person(val name: String, var age: Int) // <1>
-defined class Person
+case class Point(x: Double = 0.0, y: Double = 0.0) {
+    def shift(deltax: Double = 0.0, deltay: Double = 0.0) = copy (x + deltax, y + deltay)
+}
 ----
 <1> 
 
