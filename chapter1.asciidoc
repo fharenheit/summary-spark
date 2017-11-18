@@ -1,0 +1,215 @@
+== Scala Basic for Java Developer
+
+=== Scala의 특징
+
+* JVM에서 동작
+* 정적 타이핑 언어
+* 객체지향과 함수형의 혼합
+* 세련된 타입 시스템
+* 유연한 문접
+* 확장성
+
+=== Scala SDK
+
+Scala SDK는 https://www.scala-lang.org에서 다운로드 및 설치를 하도록 합니다.
+
+[source,bash]
+----
+$ scala -version
+Scala code runner version 2.11.2 -- Copyright 2002-2013, LAMP/EPFL
+
+$ scala -help
+Usage: scala <options> [<script|class|object|jar> <arguments>]
+       or scala -help
+All options to scalac (see scalac -help) are also allowed.
+...
+----
+
+=== Scala 개발시 유의해야할 점
+
+* 들여쓰기는 2로 한다
+* 코드의 마지막에는 세미콜론을 입력하지 않는다
+* 모든 메소드는 리턴한다
+* REPL 모드를 적극 활용한다
+
+=== Scala REPL 모드
+
+Scala는 REPL을 지원하므로 REPL 모드로 진입하여 소스코드의 실행을 중간에 모두 확인할 수 있습니다.
+
+[source,bash]
+----
+$ scala  // <1>
+Welcome to Scala version 2.11.2 (Java HotSpot(TM)...). Type in expressions to have them evaluated.
+Type :help for more information.
+
+scala> val s = "Hello, World!" 
+s: String = Hello, World!
+
+scala> println("Hello, World!") 
+Hello, World!
+
+scala>1+2 
+res3: Int = 3
+
+scala> s.con<tab>  // <2>
+concat contains contentEquals
+
+scala> s.contains("el") 
+res4: Boolean = true
+
+scala> :quit  // <3>
+----
+<1> Scala의 REPL 모드 진입
+<2> 탭키를 통한 자동완성
+<3> REPL 모드 종료
+
+=== Class 정의
+
+[source,scala]
+----
+class Upper {  // <1>
+    def upper(strings: String*): Seq[String] = { // <2>
+        strings.map((s:String) => s.toUpperCase()) 
+    }
+}
+
+val up = new Upper 
+println(up.upper("Hello", "World!"))
+----
+<1> 클래스 정의
+<2> 메소드 정의
+
+=== 메소드 정의
+
+* 메소드 정의는 `def`로 시작합니다.
+* 변수를 정의할 때에는 자료형을 뒤에 정의합니다. ==> `strings: String*`
+* 메소드의 반환값은 뒤에 정의합니다. ==> `Seq[String]`
+
+[source,scala]
+----
+def upper(strings: String*): Seq[String] = ...
+----
+
+메소도의 실제 구현 코드는 다음과 같이 작성할 수 있습니다.
+
+[source,scala]
+----
+def Upper {
+    def upper(strings: String*): Seq[String] = strings.map(_.toUpperCase())
+}
+----
+
+=== Singletone 정의
+
+Singleton을 정의하려면 `def` 대신 `object`를 다음과 같이 사용하도록 합니다.
+
+[source,scala]
+----
+object Upper { // <1>
+    def upper(strings: String*) = strings.map(_.toUpperCase())
+}
+
+println(Upper.upper("Hello", "World!")) // <2>
+----
+<1> Singleton 정의
+<2> Singleton의 메소드 호출
+
+다음은 `main` 메소드를 포함하는 Singleton을 정의한 예제입니다.
+
+[source,scala]
+----
+object Upper {
+    def main(args: Array[String]) = {
+        args.map(_.toUpperCase()).foreach(printf("%s ",_))
+        println("")
+    }
+}
+----
+
+=== 변수 정의
+
+* immutable 변수를 정의하려면 `val`을 사용합니다. Java의 `final`과 유사합니다.
+* mutable 변수를 정의하려면 `var`를 사용합니다.
+
+==== Immutable 변수
+
+Immutable 변수는 그 참조값을 변경할 수 없습니다.
+
+[source,scala]
+----
+scala> val array: Array[String] = new Array(5) // <1>
+array: Array[String] = Array(null, null, null, null, null)
+
+scala> array = new Array(2) // <2>
+<console>:8: error: reassignment to val // <3>
+       array = new Array(2) 
+
+scala> array(0) = "Hello" // <2>
+scala> array
+res1: Array[String] = Array(Hello, null, null, null, null)
+----
+<1> Immutable Array 정의
+<2> Immutable Array 자체를 변경 시도
+<3> Immutable이므로 변경이 불가능
+<4> Immutable이나 Array의 값은 변경 가능
+
+==== Mutable 변수
+
+[source,scala]
+----
+scala> var stockPrice: Double = 100.0 // <1>
+stockPrice: Double = 100.0
+
+scala> stockPrice = 200.0  // <2>
+stockPrice: Double = 200.0
+----
+<1> Mutable 변수 정의
+<2> Mutable 변수의 값을 변경
+
+=== 생성자 및 인스턴스 변수
+
+[source,scala]
+----
+scala> class Person(val name: String, var age: Int) // <1>
+defined class Person
+
+scala> val p = new Person("Dean Wampler", 29)  // <2>
+p: Person = Person@165a128d
+
+scala> p.name // <3>
+res0: String = Dean Wampler
+
+scala> p.age  // <3>
+res2: Int = 29
+
+scala> p.name = "Buck Trends"  // <4>
+<console>:9: error: reassignment to val
+      p.name = "Buck Trends" 
+             ^
+
+scala> p.age = 30 // <5>
+p.age: Int = 30
+----
+<1> 클래스 정의시 생성자의 변수에 Immutable과 Mutable 변수를 정의
+<2> `Person`을 생성
+<3> `val`, `var`로 정의하는 경우 인스턴스 변수로 같이 정의되어 값을 get하는 것이 가능
+<4> `p.name`은 `val`로 정의가 되어 Immutable하므로 값을 변경할 수 없음
+<5> `p.age`는 Mutable이므로 값을 변경할 수 있음
+
+[source,scala]
+----
+scala> class Person(val name: String, var age: Int) // <1>
+defined class Person
+----
+<1> 
+
+
+
+
+[source,scala]
+----
+scala> class Person(val name: String, var age: Int) // <1>
+defined class Person
+----
+<1> 
+
